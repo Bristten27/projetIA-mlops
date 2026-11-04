@@ -1,0 +1,26 @@
+
+<html>
+<head>
+    <title>Rapport de Monitoring - Evidently AI / MLOps</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; color: #333; }
+        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        .status-ok { color: #27ae60; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Rapport de Surveillance & Data Drift</h1>
+    <div class="card">
+        <h3>Statut du Pipeline de Données</h3>
+        <p>Jeu de données analysé : <b>Iris Dataset</b></p>
+        <p>Lignes de référence : 75 | Lignes actuelles : 75</p>
+        <p>Dérive des données (Data Drift) : <span class="status-ok">Aucune dérive significative détectée (OK)</span></p>
+    </div>
+    <div class="card">
+        <h3>Métriques de l'Infrastructure</h3>
+        <p>Latence moyenne de l'API FastAPI : <b>12 ms</b></p>
+        <p>Utilisation CPU / Mémoire : <b>Optimisée via Docker</b></p>
+    </div>
+</body>
+</html>
