@@ -1,0 +1,7 @@
+stages:
+  train:
+    cmd: python -c "import joblib; print('Pipeline d entrainement DVC')"
+    deps:
+      - iris_dataset.csv
+    outs:
+      - model.pkl
