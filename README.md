@@ -3,19 +3,19 @@
 # Membres du groupe
 421 H-TOL ANDRIANJARA Jean de Bristten
 
+495 H-TOL TIVERNE Solonomena Stéphane
+
 467 H-TOL RAMBININTSOA Flavien Alfred
 
 435 H-TOL RAFIDISON Jean Aime
 
 455 H-TOL ODONARDO DESIRE Andriamiadana Avenir
 
-495 H-TOL TIVERNE Solonomena Stéphane
-
 ## Description
 Pipeline MLOps complet et automatisé pour la classification du jeu de données Iris. Le projet intègre le versionnage des données, le suivi des expériences, l'intégration continue (CI/CD), la containerisation Docker, une API d'inférence web et le monitoring de la dérive des données.
 
 ## Structure du projet
-
+```text
 projetIA-mlops/
 ├── .github/
 │   └── workflows/
