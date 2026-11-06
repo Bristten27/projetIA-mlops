@@ -34,30 +34,38 @@ projetIA-mlops/
 
 
 Données & Versionnage (DVC)
+
 Dataset: iris_dataset.csv
 
 Outil: DVC (Data Version Control) pour assurer la traçabilité et le versionnage des données.
 
 Pipeline: Défini via dvc.yaml pour lier les étapes de préparation et d'entraînement.
 
-Suivi des Expériences (MLflow)
+Suivi des Expériences (MLflow
+
 Le projet utilise MLflow pour enregistrer et suivre les paramètres, les métriques et les artifacts des modèles entraînés (stockés dans le dossier mlruns/).
 
 API d'Inférence (FastAPI - app.py)
+
 Le fichier app.py expose une API web construite avec FastAPI permettant de consommer le modèle de classification en temps réel.
 
 Route racine (/): Vérification de l'état opérationnel du service.
 
 Lancement local de l'API
+
 Bash
 uvicorn app:app --reload
+
 Intégration Continue (CI/CD - GitHub Actions)
+
 Le workflow configuré dans .github/workflows/main.yml s'exécute automatiquement à chaque push sur la branche main pour valider l'intégrité du code et des dépendances.
 
 Containerisation (Docker)
+
 L'application est entièrement conteneurisée pour garantir un déploiement fluide et reproductible.
 
 Commandes Docker
+
 Construction de l'image:
 
 Bash
@@ -70,6 +78,7 @@ Monitoring (Evidently AI)
 Le rapport evidently_report.html généré dans le projet permet d'analyser la qualité des données et de détecter d'éventuelles dérives (Data Drift) par rapport aux données d'entraînement initiales.
 
 Installation
+
 Bash
 pip install -r requirements.txt
 Dépendances principales
