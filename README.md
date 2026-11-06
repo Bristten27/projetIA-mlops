@@ -33,30 +33,31 @@ projetIA-mlops/
 └── README.md                      # Ce fichier
 
 
-## Données & Versionnage (DVC)
-- **Dataset**: `iris_dataset.csv`
-- **Outil**: DVC (Data Version Control) pour assurer la traçabilité et le versionnage des données.
-- **Pipeline**: Dééfini via `dvc.yaml` pour lier les étapes de préparation et d'entraînement.
+Données & Versionnage (DVC)
+Dataset: iris_dataset.csv
 
-## Suivi des Expériences (MLflow)
-Le projet utilise **MLflow** pour enregistrer et suivre les paramètres, les métriques et les artifacts des modèles entraînés (stockés dans le dossier `mlruns/`).
+Outil: DVC (Data Version Control) pour assurer la traçabilité et le versionnage des données.
 
-## API d'Inférence (FastAPI - app.py)
-Le fichier `app.py` expose une API web construite avec **FastAPI** permettant de consommer le modèle de classification en temps réel.
-- **Route racine (`/`)**: Vérification de l'état opérationnel du service.
+Pipeline: Défini via dvc.yaml pour lier les étapes de préparation et d'entraînement.
 
-**Lancement local de l'API**:
-```bash
+Suivi des Expériences (MLflow)
+Le projet utilise MLflow pour enregistrer et suivre les paramètres, les métriques et les artifacts des modèles entraînés (stockés dans le dossier mlruns/).
+
+API d'Inférence (FastAPI - app.py)
+Le fichier app.py expose une API web construite avec FastAPI permettant de consommer le modèle de classification en temps réel.
+
+Route racine (/): Vérification de l'état opérationnel du service.
+
+Lancement local de l'API
+Bash
 uvicorn app:app --reload
-
 Intégration Continue (CI/CD - GitHub Actions)
 Le workflow configuré dans .github/workflows/main.yml s'exécute automatiquement à chaque push sur la branche main pour valider l'intégrité du code et des dépendances.
 
 Containerisation (Docker)
 L'application est entièrement conteneurisée pour garantir un déploiement fluide et reproductible.
 
-Commandes Docker:
-
+Commandes Docker
 Construction de l'image:
 
 Bash
