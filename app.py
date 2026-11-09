@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import joblib
@@ -6,6 +7,7 @@ import torch
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
+import uvicorn
 
 
 ROOT_DIR = Path(__file__).resolve().parent
@@ -70,3 +72,8 @@ async def predict(file: UploadFile = File(...), top_k: int = 5):
             for index in best_indices
         ],
     }
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("app:app", host="0.0.0.0", port=port)

@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 COPY model.pkl .
 
-# Render utilise généralement le port 10000
-EXPOSE 10000
+# Render fournit le port via PORT ; 8000 est le défaut local.
+EXPOSE 8000
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "10000"]
+CMD ["python", "app.py"]
