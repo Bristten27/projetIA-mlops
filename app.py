@@ -1,6 +1,7 @@
 import joblib
 import numpy as np
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # 1. Charger le modèle préalablement entraîné et sauvegardé
@@ -11,6 +12,15 @@ app = FastAPI(
     title="API MLOps - Prédiction Iris",
     description="API pour prédire la classe d'une fleur Iris via un modèle Scikit-Learn",
     version="1.0"
+)
+
+# Configuration CORS pour autoriser les requêtes externes (depuis Hugging Face)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Autorise toutes les origines
+    allow_credentials=True,
+    allow_methods=["*"],  # Autorise toutes les méthodes (GET, POST, etc.)
+    allow_headers=["*"],  # Autorise tous les headers
 )
 
 # 3. Définir le format des données d'entrée (Payload JSON)
