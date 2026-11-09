@@ -1,57 +1,72 @@
+from pathlib import Path
+
 import joblib
 import numpy as np
-from fastapi import FastAPI
+import torch
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from PIL import Image, UnidentifiedImageError
 
-# 1. Charger le modèle préalablement entraîné et sauvegardé
-model = joblib.load("model.pkl")
 
-# 2. Initialiser l'application FastAPI
+ROOT_DIR = Path(__file__).resolve().parent
+MODEL_PATH = ROOT_DIR / "model.pkl"
+artifact = joblib.load(MODEL_PATH)
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+feature_extractor = artifact["feature_extractor"].to(device)
+feature_extractor.eval()
+classifier = artifact["classifier"]
+classes = artifact["classes"]
+image_transform = artifact["transform"]
+
 app = FastAPI(
-    title="API MLOps - Prédiction Iris",
-    description="API pour prédire la classe d'une fleur Iris via un modèle Scikit-Learn",
-    version="1.0"
+    title="Flowers102 Prediction API",
+    description="Classification d'images de fleurs avec ResNet18 et Flowers102.",
+    version="1.0",
 )
 
-# Configuration CORS pour autoriser les requêtes externes (depuis Hugging Face)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Autorise toutes les origines
-    allow_credentials=True,
-    allow_methods=["*"],  # Autorise toutes les méthodes (GET, POST, etc.)
-    allow_headers=["*"],  # Autorise tous les headers
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# 3. Définir le format des données d'entrée (Payload JSON)
-class IrisFeatures(BaseModel):
-    sepal_length: float
-    sepal_width: float
-    petal_length: float
-    petal_width: float
 
-# 4. Route racine (Health Check)
 @app.get("/")
 def read_root():
-    return {"message": "Bienvenue sur l'API MLOps ! Le service est opérationnel."}
+    return {"message": "Flowers102 API is running.", "status": "ok"}
 
-# 5. Route de prédiction
+
 @app.post("/predict")
-def predict(features: IrisFeatures):
-    # Préparer les données pour le modèle
-    input_data = np.array([[
-        features.sepal_length,
-        features.sepal_width,
-        features.petal_length,
-        features.petal_width
-    ]])
-    
-    # Faire la prédiction
-    prediction = model.predict(input_data)
-    target_names = ['setosa', 'versicolor', 'virginica']
-    predicted_class = target_names[int(prediction[0])]
-    
+async def predict(file: UploadFile = File(...), top_k: int = 5):
+    if top_k < 1:
+        raise HTTPException(status_code=400, detail="top_k doit être supérieur ou égal à 1.")
+
+    try:
+        image = Image.open(file.file).convert("RGB")
+    except UnidentifiedImageError as exc:
+        raise HTTPException(status_code=400, detail="Le fichier envoyé n'est pas une image valide.") from exc
+    finally:
+        await file.close()
+
+    input_tensor = image_transform(image).unsqueeze(0).to(device)
+    with torch.inference_mode():
+        features = feature_extractor(input_tensor).cpu().numpy()
+
+    probabilities = classifier.predict_proba(features)[0]
+    best_indices = np.argsort(probabilities)[::-1][: min(top_k, len(classes))]
+    predicted_index = int(best_indices[0])
+
     return {
-        "prediction_index": int(prediction[0]),
-        "predicted_species": predicted_class
+        "predicted_species": classes[predicted_index],
+        "confidence_score": float(probabilities[predicted_index]),
+        "top_predictions": [
+            {
+                "predicted_species": classes[int(index)],
+                "confidence_score": float(probabilities[index]),
+            }
+            for index in best_indices
+        ],
     }
