@@ -1,7 +1,3 @@
-Voici la version adaptée et mise à jour de ton README. Il reflète désormais fidèlement ton projet réel : le passage du dataset Iris au dataset **Oxford 102 Flowers**, l'intégration de **PyTorch/Torchvision** pour l'extraction de features, le déploiement sur **Render**, et l'interface utilisateur interactive hébergée sur **Hugging Face Spaces**.
-
----
-
 # Projet_IA - Pipeline MLOps End-to-End (Oxford 102 Flowers Classification)
 
 ## Membres du groupe
@@ -17,6 +13,12 @@ Voici la version adaptée et mise à jour de ton README. Il reflète désormais 
 ## 📌 Description du Projet
 
 Ce projet implémente un pipeline MLOps complet et automatisé pour la classification d'images de fleurs basée sur le jeu de données **Oxford 102 Flowers**. Il couvre l'ensemble du cycle de vie d'un modèle de Deep Learning et de Machine Learning : de l'extraction de caractéristiques par PyTorch, l'entraînement et le versionnage, jusqu'à l'intégration continue (CI/CD GitHub Actions), la containerisation Docker RAM-optimisée, le déploiement cloud d'une API haute performance sur **Render** et l'exposition d'une interface utilisateur professionnelle sur **Hugging Face Spaces**.
+
+---
+
+## Voici la capture de notre pipeline CI/CD
+
+<img width="1919" height="878" alt="Capture Pipeline" src="https://github.com/user-attachments/assets/e76588f4-5f3b-4eef-9274-3571537fb1d3" />
 
 ---
 
